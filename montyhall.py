@@ -4,30 +4,25 @@ import random
 
 class Simulation:
 
-    def __init__(self, options=3):
+    def __init__(self):
 
-        self.doors = set(range(0, options))
+        self.doors = set(range(0, 3))
         self.choice = random.sample(self.doors, 1)[0]
         self.winning = random.sample(self.doors, 1)[0]
 
     def changeDoor(self):
-       
-        self.options = set(self.doors)
-        if self.choice == self.winning:
-            self.options.remove(self.choice)
-        else:
-            self.options.remove(self.winning)
-            self.options.remove(self.choice)
+        """
+            Initial choice is made in __init__,
 
-        self.options.remove(random.sample(self.options, 1)[0])
-        self.options.add(self.winning)
+            A door that does not contain the prize
+            is opened.
 
-        self.choice = random.sample(self.options, 1)[0]
+        """
 
         if self.choice == self.winning:
-            return 1
-        else:
             return 0
+        else:
+            return 1
 
     def keepDoor(self):
 
@@ -38,11 +33,12 @@ class Simulation:
 
 
 if __name__ == "__main__":
+    x = 10000
     changed = map(lambda x: x.changeDoor(),
-                map(lambda x: Simulation(), range(10000)))
+                map(lambda x: Simulation(), range(x)))
 
     kept = map(lambda x: x.keepDoor(),
-            map(lambda x: Simulation(), range(10000)))
+            map(lambda x: Simulation(), range(x)))
 
-    print("New door picked: ", sum(changed) / 10000)
-    print("New door not picked: ", sum(kept) / 10000)
+    print("New door picked: ", sum(changed) / x)
+    print("New door not picked: ", sum(kept) / x)
